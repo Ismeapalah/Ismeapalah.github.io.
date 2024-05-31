@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kata Kata</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #191970;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #FFFFF0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FFFFF0;
+            text-shadow: 2px 2px 4px #000000;
+            margin: 20px 0;
+        }
+
+        #profileContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #profilePic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: none;
+            border: 2px solid #4CAF50;
+            transition: transform 0.3s;
+        }
+
+        #profilePic:hover {
+            transform: scale(1.05);
+        }
+
+        #uploadLabel {
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #4CAF50;
+            background-color: #191970;
+            color: #FFFFF0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #uploadLabel:hover {
+            background-color: #4CAF50;
+            color: #191970;
+        }
+
+        #uploadButton {
+            display: none;
+        }
+
+        #nameInput {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 70%;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            text-align: center;
+        }
+
+        #profileName {
+            font-size: 1.5em;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #search {
+            width: 80%;
+            padding: 10px;
+            margin: 20px auto;
+            display: block;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        #inputContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #newWord {
+            width: 60%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        audio {
+            display: block;
+            margin: 0 auto;
+            margin-top: 20px;
+            width: 80%;
+        }
+
+        #words {
+            list-style-type: none;
+            padding: 0;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .word {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #000080;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .word:hover {
+            background-color: #0066ff;
+            color: #FFFFF0;
+            cursor: pointer;
+            transform: scale(1.05);
+        }
+
+        #tabMenu {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .tab:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .tab.active {
+            background-color: #45a049;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #000080;
+            border: 1px solid #4CAF50;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1000px;
+            background-image: linear-gradient(to right, #191970, #bf00ff);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+<div id="profileContainer">
+    <img id="profilePic" src="" alt="Profile Picture">
+    <label for="uploadButton" id="uploadLabel"><i class="fas fa-upload"></i> Unggah Foto Profil</label>
+    <input type="file" id="uploadButton" accept="image/*">
+    <input type="text" id="nameInput" placeholder="Masukkan nama Anda...">
+    <p id="profileName"></p>
+</div>
+
+<div id="tabMenu">
+    <button class="tab active" onclick="openTab('wordsTab')">Kata Kata</button>
+    <button class="tab" onclick="openTab('profileTab')">Profil</button>
+</div>
+
+<div id="wordsTab" class="tab-content active">
+    <h1>Kata Kata</h1>
+
+    <input type="text" id="search" placeholder="Cari kata kata...">
+
+    <div id="inputContainer">
+        <input type="text" id="newWord" placeholder="Masukkan kata baru...">
+        <button onclick="addWord()"><i class="fas fa-plus"></i> Tambah Kata</button>
+    </div>
+
+    <audio controls loop>
+      <source src="1000 years.mp3" type="audio/mpeg">
+      <source src="1000 years.ogg" type="audio/ogg">
+      Browser kamu tidak mendukung tag audio ini.
+    </audio>
+<ul id="words">
+  <i> <b><li class="word">1 "Jangan terlalu nyaman dengan satu hero, kalau di ambil musuh gimana?"</li>
+    <li class="word">2 "Sudah jujur dengan keadaan tapi dia milih yang lain"</li>
+    <li class="word">3 "Kenangan indah kini hanya bayangan kelam"</li>
+    <li class="word">4 "Cinta terhadap orang asing ternyata cuman jadi tukang parkir"</li>
+    <li class="word">5 "Dia sudah menghindar, harus nya kamu sadar bukannya mengejar"</li>
+    <li class="word">6 "Melupakannya tidak semudah mengenalnya"</li>
+    <li class="word">7 "kamu boleh mencintainya,tapi biarkan dia mencintai pilihannya"</li>
+    <li class="word">8 "Lebih baik di tabrak lari dari pada di tinggal pergi"</li>
+    <li class="word">9 "Semua orang bisa menemani,tapi tidak semua orang bisa memahami"</li>
+      <li class="word">10 "yang menjauh belum tentu rela, dia hanya bersikap dewasa bahwa cinta tidak selalu berakhir bahagia."</li>
+<li class="word">11 "Terkadang, kehampaan lebih terasa saat kita tenggelam dalam keheningan yang menyakitkan."</li>
+<li class="word">12 "hujan sudah batu, dan kamu masih belum menjadi milikku"</li>
+<li class="word">13 "karena terlalu nyaman,aku lupa bahwa kita hanya sebatas teman"</li>
+<li class="word">14 "tetap naksir walau mustahil"</li>
+<li class="word">15 "Sembuhkan dulu hatimu sebelum memulai kisah yang baru lagi." by:zahra</li>
+<li class="word">16 "Semakin aku tahu bagaimana sikapmu, semakin aku lelah untuk mempertahankan hubungan ini." by:zahra</li>
+<li class="word">17 "Bodohnya aku masih merasa cemburu, ketika melihatmu dengan kekasih yang baru." by:zahra </li>
+<li class="word">18 "Ada kesadaran dalam diamku. Ada penghargaan dalam teriakku, tapi tetap saja ada yang pergi meninggalkanku." by:zahra</li>
+<li class="word">19  "Apapun masalahnya jalani dengan bahagia" by:rafa</li>
+<li class="word">20 "*_Aku Akan bersaing melawan orang yang menyukai diri mu Dan aku akan mundur melawan orang yang kamu sukai karna aku sadar yang dia sukai tetaplah pemenangnya_*
+by : เดนี่"</li>
+<li class="word">21 "*_Kukira fighter itu Aulus ternyata Terizla kukira dia tulus ternyata cuma bercanda seharusnya aku tertawa bukan jatuh cinta, dari banyaknya game di playstore dan appstore mengapa aku yang kau mainkan._*
+by : เดนี่"</li>
+<li class="word">22 "Aku memberimu hatiku, aku tidak berharap untuk mendapatkannya kembali berkeping-keping."</li>
+<li class="word">23 "Luka yang tak terlihat lebih berbahaya daripada luka berdarah."</li>
+<li class="word">24 "Sangat muak berpura-pura semuanya baik-baik saja karena sebenarnya tidak."</li>
+<li class="word">25 "Tidak peduli berapa banyak aku mencoba menyembunyikan perasaanku, hati dan mataku akan selalu berbicara."</li>
+<li class="word">26 "Sembuhkan dulu hatimu sebelum memulai kisah yang baru lagi."</li>
+<li class="word">27 "Setiap ingatannya menyerang seperti udara dingin dan membekukanku saat itu"</li>
+<li class="word">28 "Setiap ingatannya menyerang seperti udara dingin dan membekukanku saat itu"</li>
+<li class="word">29 "Makasi untuk luka yang engkau berikan kemarin"</li>
+<li class="word">30 "mending indomi?
+apa mie sedap?
+mending sadar
+diri dari pada berharap"</li>
+<li class="word">31 "*_aku kamu mungkin belum ditakdirkan menjadi kita tapi terima kasih karna sudah jadi pendengar yang kutakutkan perginya sekarang akhirnya aku memilih yakin bahwa aku memang pantas dijadikan satu-satunya bukan salah satunya silahkan pilih dia jangan lupa bahagia_*
+by : เดนี่"</li>
+<li class="word">32 "Cinta dimulai dengan senyuman, tumbuh menjadi kebahagiaan dan kegembiraan, dan diakhiri dengan air mata."
+By: nadia</li>
+<li class="word">33 "*_Lawan takut. Lawan takut kalo kamu ga bisa hidup tanpa dia. Lawan takut kalo nanti ga ada yang suka lagi dengan kita.  Ketakutan kalo dilawan ga kejadian juga kok. Justru semakin kamu percaya sama ketakutan, semakin besar juga ketakutan itu jadi nyata._*
+by : เดนี่"</li>
+<li class="word">34 "Kamu berjanji untuk mencintaiku selamanya, tapi yang tersisa hanyalah janji kosong dan rasa sakit di hatiku."
+By: omong kosong</li>
+<li class="word">35 lebih baik berjuang di nexterra daripada memperjuangkan kamu yang datang hanya untuk sementara
+By:Rapa!?</li>
+<li class="word">36 "Tidak ada yang menyakitkan seperti melihat orang yang kamu cintai dengan orang lain."
+By: nadia</li>
+<li class="word">37 "_Dunia hanya sementara untuk kita_"</li>
+<li class="word">38 aku disini untukmu, meski cintamu bukan aku
+@nayakhnz</li>
+<li class="word">39 "Jarak antara kita menyakitiku. Betapa aku berharap kita bisa memperbaikinya."
+By: nadia</li>
+<li class="word">40 _untuk apa mengejar sesuatu yang sengaja memilih pergi_</li>
+<li class="word">41 . "Cinta dimulai dengan senyuman, tumbuh menjadi kebahagiaan dan kegembiraan, dan diakhiri dengan air mata."
+By: nadia</li>
+<li class="word">42 "Hubungan akan karam jika terlalu banyak penumpang di dalamnya."
+By: nadia</li>
+<li class="word">43 "kemaren Corona skrng Omicron, kemaren bersama sekarang gamon"</li>
+<li class="word">44 "_aku masih mengharap kamu mencintaiku untuk sekali lagi walaupun itu mustahil untuk terjadi lagi_"</li>
+<li class="word">45 "mengharap kamu kembali hanya sebatas mustahil"</li>
+<li class="word">46 "kenapa kalo mandi lepas baju?
+karna kalau ngelepasin kamu aku gak mampu"</li>
+<li class="word">47 "Ketika kamu berhenti mengeluh, itu tandanya kamu sudah belajar sebuah hal sederhana, yaitu kesabaran."</li>
+<li class="word">48 "Jangan pernah mencintai siapa pun yang memperlakukanmu seperti orang biasa"</li>
+<li class="word">49 "Apalah artinya sempurna, bila ada yang sederhana namun mampu membuat bahagia."</li>
+<li class="word">50 "aku kira kamu odading mang oleh,gataunya odarling my only."</li>
+<li class="word">51 "tidak ada jalan buntu bagi yang selalu melaju"</li>
+<li class="word">52 "hidup itu perihal menyambut dan kehilangan mau menyambut nya dan kau harus siap kehilangan nya"</li>
+<li class="word">53 "tidak ada yang abadi di dunia ini, baik pelangi maupun hujan, mereka sama-sama datang untuk sementara"</li>
+<li class="word">54 "waktu yang singkat memiliki kenangan yang hebat"</li>
+<li class="word">55 "jangan berekspektasi terlalu tinggi terhadap sesuatu yang tidak pasti"</li>
+<li class="word">56 "الآن أشعر بالراحة معك:aku nyaman bersamamu"</li>
+<li class="word">57 "terlalu mengagumi sampai lupa aku ini cuma npc"</li>
+<li class="word">58 "*aku akan tetap mencintaimu meskipun kau mencintai orng lain.*"</li>
+<li class="word">59 "jangan berekspektasi terlalu tinggi terhadap sesuatu yang tidak pasti"</li>
+<li class="word">60 "aku bisa melawan 1 dunia namu tak masa lalu mu"</li>
+<li class="word">61 "aku hanya pecundang yang bisa memandang mu dari jauh"</li>
+<li class="word">62 "kali ini sa salah taro hati"</li>
+<li class="word">63 "terimakasih telah mehilang dari kehidupan ku"</li>
+<li class="word">64 "disuruh ngejar cita cita malah ngejar yang ga cinta"</li>
+<li class="word">65 "*jika pelangimu sudah datang*
+  *Jangan lupakan payung yang menemanimu saat hujan*" by:alwi</li>
+<li class="word">66 "seperti sudah rela tapi masih ada rasa, seperti sudah melepaskan tapi hati masih mengingatkan"</li>
+<li class="word">67 "karena mimpi melihat dia yang sudah bersama orang lain"</li>
+<li class="word">68 "_hanya diri sendiri yang mengerti bagaimana sulitnya menahan rasa sabar tanpa harus bercerita panjang lebar_ 
+by: เดนี่"</li>
+<li class="word">69 "*setidaknya aku sudah berusaha membuat orang yang aku cintai terhibur, meskipun pada akhirnya aku sendiri yang hancur*"</li>
+<li class="word">70 "jadi lah seperti glowal yg berani hancur, demi melindungin, jangan lah seperti zona yg mendekati untuk hanya menyakiti"</li>
+<li class="word">71 "_belajar damai dengan keadaan l,dan belajar sabar dengan apa yang di rasakan_"</li>
+<li class="word">72 "siangnya happy malam nya feeling lonely"</li>
+<li class="word">73 "24 jam waktu didunia namu kau masih mikirin dia yang ga pasti"</li>
+<li class="word">74 "_Ku hanya bisa pasrah dengan melihat dia dengan org lain_"</li>
+<li class="word">75 "Klo kejebak hujan neduh
+Klo kejebak suka duluan tpi ga disukai balik bisa apa"</li>
+<li class="word">76 "Pernah yakin akan kehadirannya
+sehingga aku tulus. Sialnya yang ku dapat hanya luka yang serius" </li>
+<li class="word">77 "perasaan ku masih sama,aku hanya berhenti menujukan nya"</li>
+<li class="word">78 "gabisa tinggi seperti awan soalnya bukan pahlawan"</li>
+<li class="word">79 "semesta hanya mengizinkan kita bertukar pesan, bukan perasaan"</li>
+<li class="word">80 "siapa sangka muka semanis senja, memberi rasa suka sedalam samudra"</li>
+<li class="word">81 "aku hanya berhasil terbiasa tanpamu, tapi aku gagal melupakan semua tentangmu"</li>
+<li class="word">82 "*terkadang tuhan hanya mempertemukan*
+*bukan mempersatukan*
+*karna yang hadir belum tentu takdir*
+*dan kau hanya menemani bukan memiliki*
+
+
+Medkit butuh akuuu"</li>
+<li class="word">83 "setidaknya aku tak mati
+hanya patah hati"</li>
+<li class="word">84 "rumah tanpa lampu aja gelap apalagi kuburan tanpa solat"</li>
+<li class="word">85 "Berhentilah menjadi
+seseorang yg selalu ada
+untuk seseorang yg bahkan tak menganggapmu ada"
+🥀</li>
+<li class="word">86 "Bahkan saat kamu mencintai orang lain aku tetap mencintaimu karena aku akan menepati janji ku pada mu"</li>
+<li class="word">87 ":jangan menjadi pelangi yang datang lalu pergi
+tapi jadi lah senja yang pergi namun ia berjanji untuk kembali lagi"</li>
+<li class="word">88 "*Mungkin ini terakhir kalinya aku mengganggu mu tetapi, aku akan selalu mengingat siapa yang membuat hati ini selalu rindu padamu*"</li>
+<li class="word">89 "Dari sekian banyak hati yang terpikat padaku, mengapa bukan kamu?"</li>
+<li class="word">90 ":dia hanya bercanda seharusnya aku tertawa bukan jatuh cinta"</li>
+<li class="word">91 "You don't need to date a friend because the angels have been watching over you 70 times a day"
+
+Bye (🗿DANZ🗿?2010)"</li>
+<li class="word">92 "berhentilah memberikan sebuah harapan padaku, nyatanya kehadiranku hanya untuk mengisi waktumu yang kosong bukan hatimu"</li>
+<li class="word">93 "_*kagumi saja dia, tapi jangan pernah berharap bahwa, kamu akan menjadi miliknya*_."</li>
+<li class="word">94 "*Disuruh looting*
+*Malah asing* 🥀🥀"</li>
+<li class="word">95 "hargai selagi masih ada
+karena kehilangan bukan lah hal yang menyenangkan"</li>
+<li class="word">96 _"datang tiba tiba memberi rasa nyaman yang tiada tara,pergi tanpa aba aba memberi luka tanpa ada jeda"_</li>
+<li class="word">97 _*"Sebenarnya kita sama sama menyukai, namun bedanya kau menyukai ku sebagai teman, sedangkan aku menyukai mu lebih dari teman.*"_</li>
+<li class="word">98 "tidak ada yang menemani hanya bayangan yang mengiringi"</li>
+<li class="word">99 "hanya manusia biasa selebihnya dari tuhan"</li>
+  </b>  </h>
+</ul>
+  </div>
+  
+  <div id="profileTab" class="tab-content">
+    <!-- Tempatkan konten profil di sini -->
+</div>
+
+<script>
+    function openTab(tabName) {
+        var i, tabContent, tabLinks;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        tabLinks = document.getElementsByClassName("tab");
+        for (i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className += " active";
+    }
+
+    document.getElementById('search').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let words = document.querySelectorAll('.word');
+
+        words.forEach(function(word) {
+            if (word.textContent.toLowerCase().includes(filter)) {
+                word.style.display = '';
+            } else {
+                word.style.display = 'none';
+            }
+        });
+    });
+
+    function addWord() {
+        let newWordInput = document.getElementById('newWord');
+        let newWordText = newWordInput.value.trim();
+
+        if (newWordText !== "") {
+            let wordsList = document.getElementById('words');
+            let newWordItem = document.createElement('li');
+            newWordItem.classList.add('word');
+            newWordItem.textContent = newWordText;
+
+            wordsList.appendChild(newWordItem);
+            newWordInput.value = "";
+        }
+    }
+
+    const uploadButton = document.getElementById('uploadButton');
+    const uploadLabel = document.getElementById('uploadLabel');
+    const profilePic = document.getElementById('profilePic');
+    const nameInput = document.getElementById('nameInput');
+    const profileName = document.getElementById('profileName');
+
+    uploadButton.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                profilePic.src = reader.result;
+                profilePic.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    nameInput.addEventListener('input', function() {
+        const name = this.value.trim();
+        if (name !== "") {
+            profileName.textContent = name;
+            profileName.style.display = 'block';
+        } else {
+            profileName.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
+  
+<i>"rasa sakit dan kecewa</i>
+    <p><i> tidak boleh membuatmu menjadi jahat"</p></i>
+            
+ig:npc_0wo     mau saran teks dm
+      
+<i><p>masih beta/uji coba mungkin masih ada bug</p></i>      
+      
+        
